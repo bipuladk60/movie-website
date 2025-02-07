@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Search, X, Home, Bookmark, Film } from "lucide-react"
@@ -78,9 +76,9 @@ function NavBar() {
   }
 
   return (
-    <header className="bg-black py-4 shadow-md">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Updated Logo */}
+    <header className="w-full bg-black shadow-md">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-4">
+        {/* Logo */}
         <Link
           to="/"
           className="flex items-center space-x-2 text-white hover:text-gray-300 transition-colors duration-200"
@@ -89,11 +87,11 @@ function NavBar() {
           <span className="text-xl font-semibold">MovieApp</span>
         </Link>
 
+        {/* Search Bar (Desktop) */}
         <div className="flex-1 mx-4">
-          {/* Desktop Search Bar */}
           <div className="hidden md:block relative">
             <form onSubmit={handleSearch} className="relative">
-              <Search className="absolute left-0 top-1/2 transform -translate-y-1/2 text-gray-400 ml-2" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
                 className="w-full pl-10 pr-4 py-2 bg-transparent text-white border-b border-gray-600 focus:border-white transition-colors duration-200 focus:outline-none"
@@ -136,7 +134,7 @@ function NavBar() {
                   className="relative"
                 >
                   <form onSubmit={handleSearch} className="flex items-center">
-                    <Search className="absolute left-0 text-gray-400 ml-2" size={20} />
+                    <Search className="absolute left-3 text-gray-400" size={20} />
                     <input
                       id="mobileSearchInput"
                       type="text"
@@ -148,7 +146,7 @@ function NavBar() {
                     <button
                       type="button"
                       onClick={handleCancelSearch}
-                      className="absolute right-0 text-gray-400 focus:outline-none"
+                      className="absolute right-3 text-gray-400 focus:outline-none"
                     >
                       <X size={20} />
                     </button>
@@ -178,7 +176,7 @@ function NavBar() {
               ) : (
                 <button
                   onClick={toggleSearch}
-                  className="text-gray-400 hover:text-white focus:outline-none transition-colors duration-200"
+                  className="text-gray-400 hover:text-white transition-colors duration-200"
                 >
                   <Search size={20} />
                 </button>
@@ -191,7 +189,7 @@ function NavBar() {
         <nav className="flex items-center space-x-4">
           <Link
             to="/"
-            className="text-gray-400 hover:text-white focus:outline-none transition-colors duration-200 flex items-center justify-center"
+            className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center justify-center"
           >
             <Home size={20} className="md:mr-2" />
             <span className="hidden md:inline">Home</span>
@@ -199,7 +197,7 @@ function NavBar() {
 
           <Link
             to="/bookmarks"
-            className="text-gray-400 hover:text-white focus:outline-none transition-colors duration-200 flex items-center justify-center"
+            className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center justify-center"
           >
             <Bookmark size={20} className="md:mr-2" />
             <span className="hidden md:inline">Bookmarks</span>
@@ -211,4 +209,3 @@ function NavBar() {
 }
 
 export default NavBar
-
