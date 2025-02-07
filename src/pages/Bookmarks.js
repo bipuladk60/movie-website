@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useBookmarks } from '../context/BookmarkContext';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useBookmarks } from "../context/BookmarkContext";
 
 function Bookmarks() {
-  const { bookmarks, removeBookmark } = useBookmarks();
+  const { bookmarks, removeBookmark, toggleWatched } = useBookmarks();
 
   if (bookmarks.length === 0) {
     return <p className="p-4">No bookmarked movies yet.</p>;
@@ -27,9 +27,18 @@ function Bookmarks() {
             <div className="p-2">
               <h3 className="font-bold text-sm">{movie.Title}</h3>
               <p className="text-xs">{movie.Year}</p>
+              
+              <button
+                onClick={() => toggleWatched(movie.imdbID)}
+                className={`mt-2 px-3 py-1 rounded font-semibold ${
+                  movie.watched ? "bg-green-500 text-white" : "bg-gray-300 text-black"
+                }`}
+              >
+                {movie.watched ? "Unmark Watched" : "Mark as Watched"}
+              </button>
               <button
                 onClick={() => removeBookmark(movie.imdbID)}
-                className="mt-2 bg-red-500 text-white px-3 py-1 rounded font-semibold"
+                className="mt-2 bg-red-500 text-white px-3 py-1 rounded font-semibold ml-2"
               >
                 Remove
               </button>

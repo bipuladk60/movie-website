@@ -1,29 +1,45 @@
-import React, { createContext, useContext } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const BookmarkContext = createContext();
 
 export function BookmarkProvider({ children }) {
-  const [bookmarks, setBookmarks] = useLocalStorage('movieBookmarks', []);
+  const [bookmarks, setBookmarks] = useState(() => {
+    try {
+      const storedBookmarks = localStorage.getItem("bookmarkedMovies");
+      return storedBookmarks ? JSON.parse(storedBookmarks) : [];
+    } catch (error) {
+      console.error("Error reading from local storage:", error);
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("bookmarkedMovies", JSON.stringify(bookmarks));
+  }, [bookmarks]);
 
   const addBookmark = (movie) => {
-    if (!bookmarks.find((item) => item.imdbID === movie.imdbID)) {
-      setBookmarks([...bookmarks, { ...movie, watched: false, review: '' }]);
-    }
+    setBookmarks((prev) => {
+      if (!prev.some((m) => m.imdbID === movie.imdbID)) {
+        return [...prev, { ...movie, watched: false }];
+      }
+      return prev;
+    });
   };
 
-  const removeBookmark = (imdbID) => {
-    setBookmarks(bookmarks.filter((item) => item.imdbID !== imdbID));
+  const removeBookmark = (movieId) => {
+    setBookmarks((prev) => prev.filter((movie) => movie.imdbID !== movieId));
+  };
+
+  const toggleWatched = (movieId) => {
+    setBookmarks((prev) =>
+      prev.map((movie) =>
+        movie.imdbID === movieId ? { ...movie, watched: !movie.watched } : movie
+      )
+    );
   };
 
   return (
-    <BookmarkContext.Provider
-      value={{
-        bookmarks,
-        addBookmark,
-        removeBookmark,
-      }}
-    >
+    <BookmarkContext.Provider value={{ bookmarks, addBookmark, removeBookmark, toggleWatched }}>
       {children}
     </BookmarkContext.Provider>
   );

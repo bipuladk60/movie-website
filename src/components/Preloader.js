@@ -10,7 +10,7 @@ function Preloader({ onComplete }) {
       setIsVisible(false)
       localStorage.setItem("hasVisited", "true") // Store user visit
       onComplete() // Notify parent that animation is done
-    }, 1000) // Show animation for 3 seconds
+    }, 1000)
 
     return () => clearTimeout(timer)
   }, [onComplete])
@@ -20,7 +20,7 @@ function Preloader({ onComplete }) {
       initial={{ opacity: 1 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.1 }}
       className="fixed inset-0 bg-black flex flex-col items-center justify-center text-white z-50"
     >
       <motion.div

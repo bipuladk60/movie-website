@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
@@ -20,7 +20,19 @@ function useLocalStorage(key, initialValue) {
     }
   };
 
-  return [storedValue, setValue];
+  const toggleWatched = (movieId) => {
+    try {
+      let updatedMovies = storedValue.map((movie) =>
+        movie.id === movieId ? { ...movie, watched: !movie.watched } : movie
+      );
+      setStoredValue(updatedMovies);
+      window.localStorage.setItem(key, JSON.stringify(updatedMovies));
+    } catch (error) {
+      console.error("Error updating watched status:", error);
+    }
+  };
+
+  return [storedValue, setValue, toggleWatched];
 }
 
 export default useLocalStorage;
