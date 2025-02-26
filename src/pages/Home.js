@@ -1,3 +1,4 @@
+// src/pages/Home.js
 "use client"
 
 import { useState, useEffect } from "react"

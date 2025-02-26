@@ -1,46 +1,49 @@
-import { useEffect, useState } from "react"
-import { useLocation, Link } from "react-router-dom"
-import { motion } from "framer-motion"
-import { Film, Calendar, Search } from "lucide-react"
+import { useEffect, useState } from "react";
+import { useLocation, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Film, Calendar, Search } from "lucide-react";
 
 function SearchResults() {
-  const location = useLocation()
-  const query = new URLSearchParams(location.search).get("query") || ""
-  const [movies, setMovies] = useState([])
-  const [loading, setLoading] = useState(true)
+  const location = useLocation();
+  const query = new URLSearchParams(location.search).get("query") || "";
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const apiKey = process.env.REACT_APP_MOVIE_API_KEY
-  const apiHost = process.env.REACT_APP_MOVIE_API_HOST
+  const apiKey = process.env.REACT_APP_MOVIE_API_KEY;
+  const apiHost = process.env.REACT_APP_MOVIE_API_HOST;
 
   useEffect(() => {
     if (!query.trim()) {
-      setLoading(false)
-      return
+      setLoading(false);
+      return;
     }
 
     const fetchMovies = async () => {
-      setLoading(true)
+      setLoading(true);
+      setError('');
       try {
-        const url = `https://${apiHost}/?s=${encodeURIComponent(query)}&r=json&page=1`
+        const url = `https://${apiHost}/?s=${encodeURIComponent(query)}&r=json&page=1`;
         const options = {
           method: "GET",
           headers: {
             "x-rapidapi-key": apiKey,
             "x-rapidapi-host": apiHost,
           },
-        }
-        const response = await fetch(url, options)
-        const data = await response.json()
-        setMovies(data.Search || [])
+        };
+        const response = await fetch(url, options);
+        const data = await response.json();
+        setMovies(data.Search || []);
       } catch (error) {
-        console.error(error)
+        console.error(error);
+        setError('Failed to fetch movies. Please try again later.');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchMovies()
-  }, [query, apiKey, apiHost])
+    fetchMovies();
+  }, [query, apiKey, apiHost]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -50,7 +53,7 @@ function SearchResults() {
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -58,7 +61,7 @@ function SearchResults() {
       y: 0,
       opacity: 1,
     },
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-12">
@@ -71,6 +74,8 @@ function SearchResults() {
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
           </div>
+        ) : error ? (
+          <p className="text-center text-xl">{error}</p>
         ) : movies.length > 0 ? (
           <motion.div
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6"
@@ -79,10 +84,10 @@ function SearchResults() {
             animate="visible"
           >
             {movies.map((movie) => (
-              <motion.div key={movie.imdbID} variants={itemVariants}>
+              <motion.div key={movie.imdbID} variants={itemVariants} className="flex flex-col"> {/* Added flex flex-col to the movie card container */}
                 <Link
                   to={`/movie/${movie.imdbID}`}
-                  className="bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition duration-300 ease-in-out block"
+                  className="bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition duration-300 ease-in-out block flex flex-col h-full"
                 >
                   <div className="relative aspect-w-2 aspect-h-3">
                     {movie.Poster && movie.Poster !== "N/A" ? (
@@ -97,8 +102,8 @@ function SearchResults() {
                       </div>
                     )}
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-sm mb-1 line-clamp-2">{movie.Title}</h3>
+                  <div className="p-4 flex flex-col justify-between h-full"> {/* Added flex flex-col justify-between h-full to content div */}
+                    <h3 className="font-semibold text-sm mb-1 line-clamp-2 overflow-hidden text-ellipsis whitespace-nowrap">{movie.Title}</h3> {/* Added overflow-hidden text-ellipsis whitespace-nowrap */}
                     <p className="text-xs text-gray-400 flex items-center">
                       <Calendar size={12} className="mr-1" />
                       {movie.Year}
@@ -113,8 +118,7 @@ function SearchResults() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default SearchResults
-
+export default SearchResults;

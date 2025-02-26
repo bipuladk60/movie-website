@@ -1,3 +1,4 @@
+// src/components/MovieRow.js
 "use client"
 
 import { useEffect, useState } from "react"
@@ -39,7 +40,7 @@ function MovieRow({ title, titleSize = "text-2xl", query }) {
       <h2 className={`${titleSize} font-bold mb-6 px-4 text-white`}>{title}</h2>
       <div className="relative">
         <div className="flex gap-4 overflow-x-scroll px-4 pb-4 scrollbar-hide">
-          {movies.map((movie) => (
+          {movies.length > 0 ? movies.map((movie) => (
             <motion.div
               key={movie.imdbID}
               className="relative min-w-[200px] w-[200px] rounded-lg overflow-hidden bg-gray-800 flex-shrink-0 shadow-lg"
@@ -50,8 +51,8 @@ function MovieRow({ title, titleSize = "text-2xl", query }) {
                 {movie.Poster && movie.Poster !== "N/A" ? (
                   <img
                     src={movie.Poster || "/placeholder.svg"}
-                    alt={movie.Title}
-                    className="w-full h-[300px] object-cover"
+                    alt={`Poster of ${movie.Title}`}
+                    className="w-full h-[300px] object-cover lazyload"
                   />
                 ) : (
                   <div className="w-full h-[300px] bg-gray-700 flex items-center justify-center">
@@ -85,7 +86,9 @@ function MovieRow({ title, titleSize = "text-2xl", query }) {
                 </div>
               </Link>
             </motion.div>
-          ))}
+          )) : (
+            <div className="text-white text-center w-full">No movies found. Please try a different search.</div>
+          )}
         </div>
       </div>
     </div>
@@ -93,4 +96,3 @@ function MovieRow({ title, titleSize = "text-2xl", query }) {
 }
 
 export default MovieRow
-
