@@ -8,7 +8,7 @@ function SearchResults() {
   const query = new URLSearchParams(location.search).get("query") || "";
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const apiKey = process.env.REACT_APP_MOVIE_API_KEY;
   const apiHost = process.env.REACT_APP_MOVIE_API_HOST;
@@ -21,9 +21,11 @@ function SearchResults() {
 
     const fetchMovies = async () => {
       setLoading(true);
-      setError('');
+      setError("");
       try {
-        const url = `https://${apiHost}/?s=${encodeURIComponent(query)}&r=json&page=1`;
+        const url = `https://${apiHost}/?s=${encodeURIComponent(
+          query
+        )}&r=json&page=1`;
         const options = {
           method: "GET",
           headers: {
@@ -36,7 +38,7 @@ function SearchResults() {
         setMovies(data.Search || []);
       } catch (error) {
         console.error(error);
-        setError('Failed to fetch movies. Please try again later.');
+        setError("Failed to fetch movies. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -57,16 +59,13 @@ function SearchResults() {
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
+    visible: { y: 0, opacity: 1 },
   };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold mb-8 flex items-center">
+        <h1 className="text-2xl font-bold mb-8 flex items-center text-gray-400">
           <Search className="mr-2" size={24} />
           Search Results for "{query}"
         </h1>
@@ -84,10 +83,19 @@ function SearchResults() {
             animate="visible"
           >
             {movies.map((movie) => (
-              <motion.div key={movie.imdbID} variants={itemVariants} className="flex flex-col"> {/* Added flex flex-col to the movie card container */}
+              <motion.div
+                key={movie.imdbID}
+                variants={itemVariants}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0px 10px 20px rgba(255, 255, 255, 0.2)",
+                }}
+                transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                className="flex flex-col"
+              >
                 <Link
                   to={`/movie/${movie.imdbID}`}
-                  className="bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition duration-300 ease-in-out block flex flex-col h-full"
+                  className="bg-gray-800 rounded-lg overflow-hidden transition duration-300 ease-in-out block flex flex-col h-full"
                 >
                   <div className="relative aspect-w-2 aspect-h-3">
                     {movie.Poster && movie.Poster !== "N/A" ? (
@@ -102,8 +110,10 @@ function SearchResults() {
                       </div>
                     )}
                   </div>
-                  <div className="p-4 flex flex-col justify-between h-full"> {/* Added flex flex-col justify-between h-full to content div */}
-                    <h3 className="font-semibold text-sm mb-1 line-clamp-2 overflow-hidden text-ellipsis whitespace-nowrap">{movie.Title}</h3> {/* Added overflow-hidden text-ellipsis whitespace-nowrap */}
+                  <div className="p-4 flex flex-col justify-between h-full">
+                    <h3 className="font-semibold text-sm mb-1 line-clamp-2 overflow-hidden text-ellipsis whitespace-nowrap">
+                      {movie.Title}
+                    </h3>
                     <p className="text-xs text-gray-400 flex items-center">
                       <Calendar size={12} className="mr-1" />
                       {movie.Year}

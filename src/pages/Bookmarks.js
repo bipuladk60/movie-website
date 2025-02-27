@@ -38,7 +38,7 @@ function Bookmarks() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 max-w-7xl mx-auto">
-      <h2 className="text-2xl font-medium mb-6 text-gray-800 dark:text-gray-100">My Collection</h2>
+      <h2 className="text-2xl font-bold tracking-tight mb-6 text-gray-400 dark:text-gray-400">My Collection</h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
         <AnimatePresence>

@@ -100,7 +100,7 @@ function NavBar() {
                             placeholder="Search for movies..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="bg-gray-800 border-b border-gray-700 text-white py-2 px-4 focus:outline-none focus:border-blue-500 w-full placeholder-gray-500" // Streamlined Tailwind CSS input styles
+                            className="bg-gray-800 border-b border-gray-700 text-white py-2 px-4 focus:outline-none focus:border-blue-500 w-full placeholder-gray-500 rounded-3xl" // Streamlined Tailwind CSS input styles
                             ref={searchInputRef} // Attach ref to input
                             onFocus={() => setIsSearchExpanded(true)} // Open suggestions on focus
                         />

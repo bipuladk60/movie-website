@@ -177,7 +177,7 @@ function MovieRowWrapper({ title, query, index }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.2 + index * 0.1 }}
     >
-      <h2 className="text-2xl font-medium tracking-tight mb-6 flex items-center">
+      <h2 className="text-2xl font-bold tracking-tight mb-6 text-gray-400 dark:text-gray-400 tracking-tight mb-6 flex items-center">
         {title}
         <motion.div
           className="ml-2 h-1 w-6 bg-red-600 rounded-full"
